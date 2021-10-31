@@ -1,0 +1,32 @@
+.body {
+    background-color: rgb(203, 207, 207);
+}
+
+.section {
+    height: 100vh;
+    width: 100%;
+}
+
+.userAddForm {
+    color: white;
+    width: 500px;
+    margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-top: -10px;
+    padding-top: 10px;
+}
+
+.userAddFormHeader {
+    background-color: brown;
+    width: 500px;
+    margin: auto;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    color: white;
+}
