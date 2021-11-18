@@ -7,6 +7,11 @@ fetch("http://localhost:56614/api/user/getall").then(response =>
 )
 
 var sayi = 1
+function scrolldown(params) {
+    console.log(params)
+    let pageHeight = window.innerHeight;
+    window.scrollTo(0, params*pageHeight);
+}
 
 function kullanicilariGetir() {
 
@@ -83,4 +88,11 @@ function myFunction() {
     var cell2 = row.insertCell(1);
     cell1.innerHTML = "NEW CELL1";
     cell2.innerHTML = "NEW CELL2";
+}
+
+function loginVisible(event) {
+    if (event==='on')
+    document.getElementById("login-id").style.display="flex";
+    else
+    document.getElementById("login-id").style.display="none";
 }
