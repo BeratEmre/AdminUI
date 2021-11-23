@@ -6,125 +6,11 @@ const nameInputForUp = document.getElementById("name-input-for-up")
 const passwordInputForUp = document.getElementById("password-input-for-up")
 const alertTextForUp = document.querySelector(".alert-text")
 var idInputForUp = 0
-window.onload = onInit;
-
-$(() => {
-    $('#gridContainer').dxDataGrid({
-        dataSource: {
-            store: {
-                type: 'odata',
-                url: 'http://localhost:56614/api/User/getall',
-                key: 'id',
-                // beforeSend(request) {
-                //     request.hr.startDate = '2020-05-10';
-                //     request.params.endDate = '2021-05-15';
-                // },
-            },
-        },
-        paging: {
-            pageSize: 10,
-        },
-        filterRow: {
-            visible: true,
-        },
-        pager: {
-            showPageSizeSelector: true,
-            allowedPageSizes: [10, 12],
-        },
-        remoteOperations: false,
-        groupPanel: { visible: true },
-        grouping: {
-            autoExpandAll: false,
-        },
-        allowColumnReordering: true,
-        rowAlternationEnabled: true,
-        showBorders: true,
-        showColumnLines: true,
-        showRowLines: true,
-        rowAlternationEnabled: true,
-        columns: [{
-                dataField: 'id',
-                caption: 'İd numarası',
-                width: 100,
-            },
-            {
-                dataField: 'userFirstName',
-                caption: 'Ad',
-                dataType: 'string',
-            },
-            {
-                dataField: 'userLastName',
-                caption: 'Soyad',
-                dataType: 'string',
-            },
-            {
-                dataField: 'password',
-                caption: 'Şifre',
-            },
-            {
-                caption: 'Güncelle',
-                type: "buttons",
-                buttons: ["edit", "delete", {
-                    text: "My Command",
-                    icon: "/icons/edit-26.png",
-                    hint: "My Command",
-                    onClick: function(e) {
-                        var user = e.row.data
-                        console.log(user);
-                        lastNameInputForUp.value = user.userLastName;
-                        nameInputForUp.value = user.userFirstName;
-                        passwordInputForUp.value = user.password;
-                        idInputForUp = parseInt(user.id)
-                        scrolldown(2);
-                    }
-                }]
-            }
-
-            // {
-            //     dataField: 'Amount',
-            //     caption: 'Sale Amount',
-            //     dataType: 'number',
-            //     format: 'currency',
-            //     alignment: 'right',
-            // },
-            // {
-            //     dataField: 'Discount',
-            //     caption: 'Discount %',
-            //     dataType: 'number',
-            //     format: 'percent',
-            //     alignment: 'right',
-            //     allowGrouping: false,
-            //     cellTemplate: discountCellTemplate,
-            //     cssClass: 'bullet',
-            // },
-
-            // {
-            //     dataField: 'Sector',
-            //     dataType: 'string',
-            // },
-            // {
-            //     dataField: 'Channel',
-            //     dataType: 'string',
-            // },
-            // {
-            //     dataField: 'Customer',
-            //     dataType: 'string',
-            //     width: 150,
-            // },
-        ],
-        onContentReady(e) {
-            if (!collapsed) {
-                collapsed = true;
-                e.component.expandRow(['EnviroCare']);
-            }
-        },
-    });
-});
-
 let collapsed = false;
 
-function onInit() {
+window.onload = onInit;
 
+function onInit() {
     if (token) {
         fetch("http://localhost:56614/api/auth/decodetoken", {
             method: "POST",
@@ -145,73 +31,281 @@ function onInit() {
                 document.getElementById("user-name").innerHTML = result.message;
             }
         });
-        // kullanicilariGetir()
-        // setPaginations(1);
+        chartGrid();
+        dataGrid();
+        pieCartGrid();
+        map();
     }
 }
 
-function setPaginations(event) {
-    console.log(event)
-    var a = 0
-    switch (event) {
-        case 1:
-            var rows = document.getElementsByTagName("table")[0].rows;
-            console.log(rows)
-            var last = rows[rows.length - 1];
-            console.log(last)
-            rows.forEach(el => {
-                var rowsLength = el.length
-                console.log(rowsLength)
-            })
-            for (let i = 0; i < 24; i++) {
-                a++
-                console.log(a)
-                if (i > 10) {
-
-                    var last = rows[i - 1];
-                    console.log(last)
-                    last.style.display = "none"
+function dataGrid() {
+    $(() => {
+        $('#gridContainer').dxDataGrid({
+            dataSource: {
+                store: {
+                    type: 'odata',
+                    url: 'http://localhost:56614/api/User/getall',
+                    key: 'id',
+                    // beforeSend(request) {
+                    //     request.hr.startDate = '2020-05-10';
+                    //     request.params.endDate = '2021-05-15';
+                    // },
+                },
+            },
+            paging: {
+                pageSize: 10,
+            },
+            filterRow: {
+                visible: true,
+            },
+            pager: {
+                showPageSizeSelector: true,
+                allowedPageSizes: [10, 12],
+            },
+            remoteOperations: false,
+            groupPanel: { visible: true },
+            grouping: {
+                autoExpandAll: false,
+            },
+            allowColumnReordering: true,
+            rowAlternationEnabled: true,
+            showBorders: true,
+            showColumnLines: true,
+            showRowLines: true,
+            rowAlternationEnabled: true,
+            columns: [{
+                    dataField: 'id',
+                    caption: 'İd Numarası',
+                    width: 100,
+                },
+                {
+                    dataField: 'userFirstName',
+                    caption: 'Ad',
+                    dataType: 'string',
+                },
+                {
+                    dataField: 'userLastName',
+                    caption: 'Soyad',
+                    dataType: 'string',
+                },
+                {
+                    dataField: 'password',
+                    caption: 'Şifre',
+                },
+                {
+                    caption: 'Güncelle',
+                    type: "buttons",
+                    buttons: ["edit", "delete", {
+                        text: "My Command",
+                        icon: "/icons/edit-26.png",
+                        hint: "My Command",
+                        onClick: function(e) {
+                            var user = e.row.data
+                            console.log(user);
+                            lastNameInputForUp.value = user.userLastName;
+                            nameInputForUp.value = user.userFirstName;
+                            passwordInputForUp.value = user.password;
+                            idInputForUp = parseInt(user.id)
+                            scrolldown(2);
+                        }
+                    }]
                 }
-            }
-            break;
-
-        default:
-            break;
-    }
+            ],
+            onContentReady(e) {
+                if (!collapsed) {
+                    collapsed = true;
+                    e.component.expandRow(['EnviroCare']);
+                }
+            },
+        });
+    });
 }
+
+function chartGrid() {
+    $(() => {
+        const chartDataSource = new DevExpress.data.DataSource({
+            store: {
+                type: 'odata',
+                url: 'http://localhost:56614/api/User/getall',
+            },
+            postProcess(results) {
+                return results;
+            },
+            expand: 'DayItems',
+            filter: ['id', '=', 1],
+            paginate: false,
+        });
+
+        const chartOptions = {
+            dataSource: chartDataSource,
+            title: 'Kullanıcı Rol Sayısı Grafiği',
+            size: {
+                height: 420,
+            },
+            series: {
+                argumentField: 'userFirstName',
+                valueField: 'id',
+            },
+            legend: {
+                visible: false,
+            },
+            commonPaneSettings: {
+                border: {
+                    visible: true,
+                    width: 2,
+                    top: false,
+                    right: false,
+                },
+            },
+            export: {
+                enabled: true,
+            },
+            tooltip: {
+                enabled: true,
+                customizeTooltip(arg) {
+                    return {
+                        text: `${arg.value}`,
+                    };
+                },
+            },
+            valueAxis: {
+                valueType: 'numeric',
+                grid: {
+                    opacity: 0.2,
+                },
+                label: {
+                    customizeText() {
+                        return `${this.valueText}`;
+                    },
+                },
+            },
+            argumentAxis: {
+                type: 'discrete',
+                grid: {
+                    visible: true,
+                    opacity: 0.5,
+                },
+            },
+            loadingIndicator: {
+                enabled: true,
+            },
+        };
+
+        $('#chart').dxChart(chartOptions);
+    });
+}
+
+async function pieCartGrid() {
+
+    var dataSource = await fetch("http://localhost:56614/api/User/getall", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8"
+            },
+        })
+        .then(
+            (response) => {
+                return response.json();
+            }).then(response => {
+            console.log(response)
+            return response;
+        })
+        .catch(function(err) {
+            console.log("error" + err);
+        });
+    console.log(dataSource)
+    $(() => {
+        $('#pie').dxPieChart({
+            type: 'doughnut',
+            palette: 'Soft Pastel',
+            title: 'Kullanıcı Rol Sayıları',
+            dataSource,
+            legend: {
+                horizontalAlignment: 'center',
+                verticalAlignment: 'bottom',
+            },
+            export: {
+                enabled: true,
+            },
+            series: [{
+                argumentField: 'userFirstName',
+                valueField: 'id',
+                label: {
+                    visible: true,
+                    format: 'fixedPoint',
+                    customizeText(point) {
+                        console.log(point)
+                        return `${point.value}: ${point.value}%`;
+                    },
+                    connector: {
+                        visible: true,
+                        width: 1,
+                    },
+                },
+            }],
+        });
+    });
+
+}
+
+function map() {
+    const markerUrl = 'https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png';
+    const markersData = [{
+        location: '40.899895,29.211745',
+        tooltip: {
+            text: 'Evim',
+        },
+    }, ];
+
+    $(() => {
+        const mapTypes = [{
+            key: 'roadmap',
+            name: 'Road Map',
+        }, {
+            key: 'satellite',
+            name: 'Satellite (Photographic) Map',
+        }, {
+            key: 'hybrid',
+            name: 'Hybrid Map',
+        }];
+
+        const map = $('#map').dxMap({
+
+            center: '40.899895,29.211745',
+            zoom: 15,
+            height: 400,
+            width: '100%',
+            provider: 'bing',
+            markerIconSrc: markerUrl,
+            markers: markersData,
+            apiKey: {
+                // Specify your API keys for each map provider:
+                // bing: "YOUR_BING_MAPS_API_KEY",
+                // google: "AIzaSyA1cg9k2SFeDxNk_nOiETTnqHH3Xgy121s",
+                // googleStatic: "YOUR_GOOGLE_STATIC_MAPS_API_KEY"
+            },
+            type: mapTypes[0].key,
+        }).dxMap('instance');
+
+        $('#choose-type').dxSelectBox({
+            dataSource: mapTypes,
+            displayExpr: 'name',
+            valueExpr: 'key',
+            value: mapTypes[0].key,
+            onValueChanged(data) {
+                map.option('type', data.value);
+            },
+        });
+    });
+}
+
+
 
 var sayi = 1
 
 function scrolldown(params) {
     let pageHeight = window.innerHeight;
     window.scrollTo(0, params * pageHeight * 1.3);
-}
-
-
-function kullanicilariGetir() {
-
-    fetch("http://localhost:56614/api/User/getall", {
-        method: 'get',
-        headers: new Headers({
-            'Authorization': 'Bearer ' + token,
-        }),
-    }).then(response =>
-        response.json()
-    ).then(veri =>
-        veri.forEach(element => {
-            console.log(first.name)
-            var row = table.insertRow(sayi)
-            var cell0 = row.insertCell(0);
-            var cell1 = row.insertCell(1);
-            var cell2 = row.insertCell(2);
-            var cell3 = row.insertCell(3);
-            cell0.innerHTML = `<b>${sayi}</b>`;
-            cell1.innerHTML = element.userFirstName;
-            cell2.innerHTML = element.userLastName;
-            cell3.innerHTML = element.password;
-            sayi++
-        })
-    )
 }
 
 function add() {
@@ -229,9 +323,7 @@ function add() {
                 "Content-Type": "application/json; charset=UTF-8"
             }
         })
-        .then(
-            console.log("eklendi")
-        )
+        .then()
 }
 
 function update() {
@@ -270,15 +362,6 @@ function update() {
                 document.querySelector(".alert").classList.add('hidden')
             }, 3000);
         })
-}
-
-function myFunction() {
-    var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = "NEW CELL1";
-    cell2.innerHTML = "NEW CELL2";
 }
 
 function login() {
