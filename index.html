@@ -38,15 +38,19 @@
                     <a>Kullanıcı Ekleme</a>
                     <i class="fas fa-user-plus"></i>
                 </li>
-                <li onclick="scrolldown(2)">
+                <!-- <li onclick="scrolldown(2)">
                     <a>Kullanıcı Güncelleme</a>
                     <i class="fas fa-user-edit"></i>
-                </li>
+                </li> -->
                 <li onclick="scrolldown(3)">
                     <a>Gösterge Paneli</a>
                     <i class="fas fa-chart-line"></i>
                 </li>
                 <li onclick="scrolldown(4)">
+                    <a>Kullancı Bilgilerim</a>
+                    <i class="fas fa-user-tag"></i>
+                </li>
+                <li onclick="scrolldown(5)">
                     <a>İletişim</a>
                     <i class="fas fa-address-card"></i>
                 </li>
@@ -123,7 +127,7 @@
         </div>
         <!-- Kullancı Listesi section end -->
     </section>
-
+    <!-- Kullanıcı ekleme section begin -->
     <section class="section section-color" id="userAddSection">
         <div class="section-header">
             <span>K</span>
@@ -145,24 +149,26 @@
             </h4>
         </div>
         <form class=" userAddForm bg-dark ">
-
             <div class=" mb-3 ">
                 <label for=" exampleInputEmail1 " class=" form-label ">Ad</label>
-                <input type=" email " class=" form-control " id=" adInput " aria-describedby=" emailHelp " placeholder="Adınızı giriniz.">
+                <input type=" email " class=" form-control " id="adInput" aria-describedby=" emailHelp " placeholder="Adınızı giriniz.">
             </div>
             <div class=" mb-3 ">
                 <label for=" exampleInputEmail1 " class=" form-label ">Soyad</label>
-                <input type=" email " class=" form-control " id=" soyadInput " aria-describedby=" emailHelp " placeholder="Soyadınızı giriniz.">
+                <input type=" email " class="form-control" id="soyadInput" aria-describedby=" emailHelp " placeholder="Soyadınızı giriniz.">
             </div>
             <div class=" mb-3 ">
-                <label for=" exampleInputPassword1 " class=" form-label ">Şifre</label>
-                <input type=" password " class=" form-control " id=" sifreInput" placeholder="Şifrenizi giriniz.">
+                <label for="exampleInputPassword1" class="form-label">Şifre</label>
+                <input type="password" class="form-control" id="sifreInput" placeholder="Şifrenizi giriniz.">
             </div>
-            <button type=" button " class=" btn btn-warning " onclick=" add() "> Kullanıcı Ekle</button>
-
-            <!-- <button type=" submit " class=" btn btn-primary ">Submit</button> -->
+            <button type="button" class="btn btn-warning" onclick="add()"> Kullanıcı Ekle</button>
         </form>
+        <div class="alert hidden succes-alert unsuccessful" id="add-alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <div class="alert-text" id="alet-text-add">
+            </div>
     </section>
+    <!-- Kullanıcı ekleme section end -->
     <section class=" section " id=" userUpdateSection ">
         <div class="section-header">
             <span>K</span>
@@ -205,9 +211,9 @@
             <button type="button" class="btn btn-warning" onclick="update()"> Kullanıcı Güncelle</button>
         </form>
         </div>
-        <div class="alert hidden succes-alert unsuccessful">
+        <div class="alert hidden succes-alert unsuccessful" id="update-alert">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <div class="alert-text">
+            <div class="alert-text" id="alet-text-up">
 
             </div>
     </section>
@@ -240,8 +246,62 @@
         </div>
     </section>
     <!-- Gösterge paneli end -->
-    <!-- contact section begin  -->
+    <!-- Kullanıcı bilgileri begin -->
     <section class="section">
+        <div class="section-header">
+            <span>K</span>
+            <span>U</span>
+            <span>L</span>
+            <span>L</span>
+            <span>A</span>
+            <span>N</span>
+            <span>I</span>
+            <span>C</span>
+            <span>I</span>&nbsp;&nbsp;
+            <span>B</span>
+            <span>İ</span>
+            <span>L</span>
+            <span>G</span>
+            <span>İ</span>
+            <span>L</span>
+            <span>E</span>
+            <span>R</span>
+            <span>İ</span>
+            <span>M</span>
+        </div>
+        <div class="row information-container">
+            <div class="col-12 col-lg-4 mt-4">
+                <div class="card user-card avatar-card">
+                    <img src="/icons/avatar.svg">
+                    <div class="card-body">
+                        <h3 class="card-title" id="avatar-title" style="text-align: center;"></h3>
+                        <p class="card-text" id="avatar-text"> </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8 mt-4">
+                <div class="card user-card">
+                    <div class="card-body ">
+                        <h2 class="rank-title col-4">Yetkileri</h2>
+                        <div class="row ">
+                            <div class="col-4 rank-container">
+                                <p class="rank-text" id="rank-text1"></p><img src="/icons/military-rank.png" class="rank-icon"></div>
+                            <div class="col-4 rank-container">
+                                <p class="rank-text" id="rank-text2">ber</p><img src="/icons/military-rank.png" class="rank-icon"></div>
+                            <div class="col-4 rank-container">
+                                <p class="rank-text" id="rank-text3">ber</p><img src="/icons/military-rank.png" class="rank-icon"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- Kullanıcı bilgileri end -->
+    <!-- İletişim section begin  -->
+    <section class="section section-color">
         <div class="section-header">
             <span>İ</span>
             <span>L</span>
@@ -256,7 +316,7 @@
             <div id="map"></div>
         </div>
     </section>
-    <!-- contact section end  -->
+    <!-- İletişim section end  -->
 
     <footer>
         <div class="li-container">

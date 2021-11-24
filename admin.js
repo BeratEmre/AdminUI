@@ -4,33 +4,17 @@ var token = localStorage.getItem("token");
 const lastNameInputForUp = document.getElementById("last-name-input-for-up")
 const nameInputForUp = document.getElementById("name-input-for-up")
 const passwordInputForUp = document.getElementById("password-input-for-up")
-const alertTextForUp = document.querySelector(".alert-text")
-var idInputForUp = 0
+const alertTextForUp = document.querySelector("#alet-text-up")
+const alertTextForAdd = document.querySelector("#alet-text-add")
+var idInputForUp = 0;
 let collapsed = false;
+var userList;
 
 window.onload = onInit;
 
 function onInit() {
     if (token) {
-        fetch("http://localhost:56614/api/auth/decodetoken", {
-            method: "POST",
-            body: JSON.stringify({
-                token: token
-            }),
-            headers: { "Content-Type": "application/json; charset=UTF-8" }
-        }).then(response => {
-            return response.json();
-        }).then(result => {
-            console.log(result)
-            if (result.success != true) {
-                alert(result.message)
-            } else {
-                document.getElementById("login-id").style.display = "none";
-                document.querySelector(".user-login-off").style.display = "none";
-                document.querySelector(".dropdown").style.display = "inline-block";
-                document.getElementById("user-name").innerHTML = result.message;
-            }
-        });
+        getUser();
         chartGrid();
         dataGrid();
         pieCartGrid();
@@ -197,7 +181,7 @@ function chartGrid() {
 
 async function pieCartGrid() {
 
-    var dataSource = await fetch("http://localhost:56614/api/User/getall", {
+    var dataSource = await fetch("http://localhost:56614/api/Auth/GetUserAuthorities", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json; charset=UTF-8"
@@ -208,7 +192,7 @@ async function pieCartGrid() {
                 return response.json();
             }).then(response => {
             console.log(response)
-            return response;
+            return response.data;
         })
         .catch(function(err) {
             console.log("error" + err);
@@ -218,7 +202,7 @@ async function pieCartGrid() {
         $('#pie').dxPieChart({
             type: 'doughnut',
             palette: 'Soft Pastel',
-            title: 'Kullanıcı Rol Sayıları',
+            title: 'Kullanıcıların Sahip Oldukları Rol Sayıları',
             dataSource,
             legend: {
                 horizontalAlignment: 'center',
@@ -228,14 +212,15 @@ async function pieCartGrid() {
                 enabled: true,
             },
             series: [{
-                argumentField: 'userFirstName',
-                valueField: 'id',
+                argumentField: 'authorityName',
+                valueField: 'authorityCount',
                 label: {
                     visible: true,
                     format: 'fixedPoint',
                     customizeText(point) {
-                        console.log(point)
-                        return `${point.value}: ${point.value}%`;
+                        var i = point.percentText.indexOf("%");
+                        var a = point.percentText.slice(0, i);
+                        return `${point.value}: %${a}`;
                     },
                     connector: {
                         visible: true,
@@ -312,18 +297,38 @@ function add() {
     var firstName = document.getElementById("adInput").value;
     var lastName = document.getElementById("soyadInput").value;
     var userPassword = document.getElementById("sifreInput").value;
-    fetch("http://localhost:56614/api/user/add", {
+    fetch("http://localhost:56614/api/User/add", {
             method: "POST",
             body: JSON.stringify({
-                userFirstName: firstName,
-                userLastName: lastName,
-                password: userPassword
+                password: userPassword,
+                firstName: firstName,
+                lastName: lastName
             }),
             headers: {
                 "Content-Type": "application/json; charset=UTF-8"
             }
         })
-        .then()
+        .then(res => {
+            console.log(res)
+            return res.json();
+        }).then(data => {
+            console.log(data)
+            var alert = document.querySelector("#add-alert")
+            if (!data.success) {
+                alert.classList.remove('succes-alert')
+                alert.classList.add('unsuccessful')
+                alertTextForAdd.innerHTML = "<strong>Hata! </strong><br>" + data.message
+
+            } else {
+                alert.classList.remove('unsuccessful')
+                alert.classList.add('succes-alert')
+                alertTextForAdd.innerHTML = "<strong>Başarılı! </strong><br>" + data.message
+            }
+            alert.classList.remove('hidden')
+            setTimeout(() => {
+                document.querySelector("#add-alert").classList.add('hidden')
+            }, 3000);
+        })
 }
 
 function update() {
@@ -346,7 +351,7 @@ function update() {
             return res.json();
         }).then(data => {
             console.log(data)
-            var alert = document.querySelector(".alert")
+            var alert = document.querySelector("#update-alert")
             if (!data.success) {
                 alert.classList.remove('succes-alert')
                 alert.classList.add('unsuccessful')
@@ -359,7 +364,7 @@ function update() {
             }
             alert.classList.remove('hidden')
             setTimeout(() => {
-                document.querySelector(".alert").classList.add('hidden')
+                document.querySelector("#update-alert").classList.add('hidden')
             }, 3000);
         })
 }
@@ -403,4 +408,62 @@ function loginVisibly(params) {
 
     else
         document.getElementById("login-id").style.display = "none";
+}
+
+async function getUser() {
+    await fetch("http://localhost:56614/api/User/getall", {
+        method: "GET",
+        headers: { "Content-Type": "application/json; charset=UTF-8" }
+    }).then(response => {
+        return response.json();
+    }).then(result => {
+        console.log(result);
+        userList = result;
+    });
+
+    var avatarTitle = document.getElementById("avatar-title");
+    var avatarText = document.getElementById("avatar-text");
+    var id;
+    await fetch("http://localhost:56614/api/auth/decodetoken", {
+        method: "POST",
+        body: JSON.stringify({
+            token: token
+        }),
+        headers: { "Content-Type": "application/json; charset=UTF-8" }
+    }).then(response => {
+        return response.json();
+    }).then(result => {
+        console.log(result)
+        if (result.success != true) {
+            alert(result.message)
+        } else {
+            document.getElementById("login-id").style.display = "none";
+            document.querySelector(".user-login-off").style.display = "none";
+            document.querySelector(".dropdown").style.display = "inline-block";
+            var name = result.message.substring(0, result.message.indexOf("&"))
+            document.getElementById("user-name").innerHTML = name;
+            avatarTitle.innerHTML = name;
+            id = result.message.substring(result.message.indexOf("&") + 1);
+        }
+    });
+    console.log(userList.filter(u => u.id == id));
+    var user = userList.filter(u => u.id == id)
+
+    await fetch("http://localhost:56614/api/user/getclaims", {
+        method: "POST",
+        body: JSON.stringify({
+            id: Number(id),
+            password: user[0].password,
+            firstName: user[0].userFirstName,
+            lastName: user[0].userLastName,
+        }),
+        headers: { "Content-Type": "application/json; charset=UTF-8" }
+    }).then(response => {
+        return response.json();
+    }).then(result => {
+        result.forEach(element => {
+            document.querySelector("#rank-text1").innerHTML = " " + element.name
+        });
+    });
+
 }

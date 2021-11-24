@@ -309,6 +309,44 @@ header nav .container .dropdown .dropdown-content p i {
 
 /* alert end */
 
+.information-container {
+    width: 90%;
+    margin: auto;
+    transform: translateY(50px);
+}
+
+.information-container .rank-title {
+    text-align: center;
+}
+
+.information-container .avatar-card {
+    width: 280px;
+}
+
+.information-container .user-card {
+    height: 350px;
+}
+
+.information-container .rank-container {
+    text-align: center;
+}
+
+.information-container .rank-text {
+    margin-top: 50px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 26px;
+    color: white;
+    display: inline-block;
+    background-color: var(--success);
+    text-transform: uppercase;
+}
+
+.information-container .rank-icon {
+    margin-left: 20px;
+    width: 40px;
+}
+
 footer {
     background-color: rgba(0, 0, 0, 0.8);
     height: 400px;
