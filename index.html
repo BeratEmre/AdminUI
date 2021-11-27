@@ -28,8 +28,12 @@
                 <i class="fas fa-home"></i>
                 <a>Yönetici Paneli</a>
             </li>
-
-            <div class="container">
+            <div class="container  nav-menu" style="width: 60px; float: right;" onclick="navMenuOpen()">
+                <li class="menu-icon-class">
+                    <i class="fas fa-bars menu-icons"></i>
+                </li>
+            </div>
+            <div class="container nav-container">
                 <li onclick="scrolldown(0)">
                     <a>Kullancı Listesi</a>
                     <i class="fas fa-clipboard-list"></i>
@@ -38,10 +42,6 @@
                     <a>Kullanıcı Ekleme</a>
                     <i class="fas fa-user-plus"></i>
                 </li>
-                <!-- <li onclick="scrolldown(2)">
-                    <a>Kullanıcı Güncelleme</a>
-                    <i class="fas fa-user-edit"></i>
-                </li> -->
                 <li onclick="scrolldown(3)">
                     <a>Gösterge Paneli</a>
                     <i class="fas fa-chart-line"></i>
@@ -63,13 +63,20 @@
                     <i class="far fa-user"></i>
                     <div class="dropdown-content">
                         <p>Kullanıcı Bilgilerim</p>
-                        <p>Çıkış <i class="fas fa-sign-out-alt"></i></p>
+                        <p onclick="logOut()">Çıkış <i class="fas fa-sign-out-alt"></i></p>
                     </div>
                 </li>
+                <li onclick="logOut()" class="logout-responsive">
+                    <a>Çıkış</a>
+                    <i class="fas fa-sign-out-alt"></i>
+                </li>
             </div>
-
         </nav>
     </header>
+    <div class="reponsive-nav-content hidden" onclick="navMenuOpen()">
+    </div>
+
+
     <!-- login section begin-->
     <section class="section login-section" id="login-id">
         <i class="fas fa-times" id="close-login" onclick="loginVisibly('of')"></i>
@@ -123,6 +130,8 @@
             <span>İ</span>
         </div>
         <div class="list-container">
+            <button type="button" class="btn btn-success" onclick="dataGrid()" style="margin-bottom: 6px;"><i
+                        class="fas fa-sync"></i></button>
             <div id="gridContainer"></div>
         </div>
         <!-- Kullancı Listesi section end -->
@@ -148,20 +157,20 @@
             <h4 class=" text-center "> <i class="fas fa-user-plus"></i>
             </h4>
         </div>
-        <form class=" userAddForm bg-dark ">
-            <div class=" mb-3 ">
+        <form class="userAddForm bg-dark ">
+            <div class="mb-3">
                 <label for=" exampleInputEmail1 " class=" form-label ">Ad</label>
                 <input type=" email " class=" form-control " id="adInput" aria-describedby=" emailHelp " placeholder="Adınızı giriniz.">
             </div>
-            <div class=" mb-3 ">
-                <label for=" exampleInputEmail1 " class=" form-label ">Soyad</label>
-                <input type=" email " class="form-control" id="soyadInput" aria-describedby=" emailHelp " placeholder="Soyadınızı giriniz.">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class=" form-label">Soyad</label>
+                <input type="email" class="form-control" id="soyadInput" placeholder="Soyadınızı giriniz.">
             </div>
-            <div class=" mb-3 ">
+            <div class="mb-3">
                 <label for="exampleInputPassword1" class="form-label">Şifre</label>
                 <input type="password" class="form-control" id="sifreInput" placeholder="Şifrenizi giriniz.">
             </div>
-            <button type="button" class="btn btn-warning" onclick="add()"> Kullanıcı Ekle</button>
+            <button type="button" class="btn btn-success" onclick="add()"> Kullanıcı Ekle</button>
         </form>
         <div class="alert hidden succes-alert unsuccessful" id="add-alert">
             <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
@@ -219,7 +228,7 @@
     </section>
 
     <!-- Gösterge Paneli section begin -->
-    <section class="section section-color">
+    <section class="section section-color chart-section">
         <div class="section-header">
             <span>G</span>
             <span>Ö</span>
@@ -237,10 +246,10 @@
             <span>İ</span>
         </div>
         <div class="row chart-container">
-            <div class=" col-7">
+            <div class="col-12 col-md-7">
                 <div id="pie"></div>
             </div>
-            <div class=" col-5">
+            <div class="col-12 col-md-5">
                 <div id="chart"></div>
             </div>
         </div>
@@ -284,13 +293,15 @@
                     <div class="card-body ">
                         <h2 class="rank-title col-4">Yetkileri</h2>
                         <div class="row ">
-                            <div class="col-4 rank-container">
-                                <p class="rank-text" id="rank-text1"></p><img src="/icons/military-rank.png" class="rank-icon"></div>
-                            <div class="col-4 rank-container">
-                                <p class="rank-text" id="rank-text2">ber</p><img src="/icons/military-rank.png" class="rank-icon"></div>
-                            <div class="col-4 rank-container">
-                                <p class="rank-text" id="rank-text3">ber</p><img src="/icons/military-rank.png" class="rank-icon"></div>
-
+                            <div class="col-4 rank-container hidden rank-text1">
+                                <p class="rank-text" id="rank-text1"></p><img src="/icons/military-rank.png" class="rank-icon">
+                            </div>
+                            <div class="col-4 rank-container hidden rank-text2">
+                                <p class="rank-text" id="rank-text2"></p><img src="/icons/military-rank.png" class="rank-icon">
+                            </div>
+                            <div class="col-4 rank-container hidden rank-text3">
+                                <p class="rank-text" id="rank-text3"></p><img src="/icons/military-rank.png" class="rank-icon">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -326,7 +337,7 @@
             </li>
             <li>
                 <label for=""> <i class="fas fa-phone-square-alt icon-font"></i>
-                    Telefon :</label>
+                        Telefon :</label>
                 <a href="">5355816050</a>
             </li>
             <li>

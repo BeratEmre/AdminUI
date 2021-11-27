@@ -31,9 +31,10 @@ header nav {
     color: white;
 }
 
-header nav .container {
+header nav .nav-container {
     width: 900px;
     float: right;
+    display: flex;
 }
 
 header nav .icon-container {
@@ -51,12 +52,20 @@ header nav .container li {
     cursor: pointer;
 }
 
+header nav .container .logout-responsive {
+    display: none;
+}
+
 header nav .container li:hover {
     background-color: white;
 }
 
 header nav .container li a {
     color: white !important;
+}
+
+header nav .nav-menu {
+    display: none;
 }
 
 header nav .container li i {
@@ -122,10 +131,10 @@ header nav .container .dropdown .dropdown-content p i {
     padding: 10px;
     background-color: white;
     border-radius: 6px;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 0%);
     position: absolute;
-    top: 70%;
     left: 50%;
+    top: 130px;
 }
 
 .chart-container {
@@ -193,7 +202,7 @@ header nav .container .dropdown .dropdown-content p i {
     left: 50%;
     top: 50%;
     margin: 0;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -77%);
 }
 
 .login-section .login-container .login-form {
@@ -270,7 +279,7 @@ header nav .container .dropdown .dropdown-content p i {
 /* alert begin */
 
 .hidden {
-    display: none;
+    display: none!important;
 }
 
 .unsuccessful {
@@ -331,6 +340,18 @@ header nav .container .dropdown .dropdown-content p i {
     text-align: center;
 }
 
+.information-container #rank-text1 {
+    background-color: var(--success);
+}
+
+.information-container #rank-text2 {
+    background-color: var(--red);
+}
+
+.information-container #rank-text3 {
+    background-color: var(--dark);
+}
+
 .information-container .rank-text {
     margin-top: 50px;
     padding: 10px 15px;
@@ -338,7 +359,6 @@ header nav .container .dropdown .dropdown-content p i {
     font-size: 26px;
     color: white;
     display: inline-block;
-    background-color: var(--success);
     text-transform: uppercase;
 }
 
@@ -349,6 +369,7 @@ header nav .container .dropdown .dropdown-content p i {
 
 footer {
     background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
     height: 400px;
     padding: 30px;
 }
@@ -377,4 +398,135 @@ footer .li-container li a:hover {
 
 .icon-font {
     font-size: 21px;
+}
+
+.reponsive-nav-content {
+    position: fixed;
+    background-color: rgb(17, 16, 16, 0.8);
+    left: 0;
+    top: 45px;
+    width: 75%;
+    height: 100vh;
+    z-index: 1000;
+    display: none;
+}
+
+@keyframes rotate90 {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(45deg);
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes rotate0 {
+    0% {
+        transform: rotate(90deg);
+    }
+    50% {
+        transform: rotate(45deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.rotate90 {
+    animation: rotate90 1s linear;
+    transform: rotate(90deg);
+}
+
+.rotate0 {
+    animation: rotate0 1s linear;
+    transform: rotate(0deg);
+}
+
+.visiblty11 {
+    display: block;
+}
+
+@media screen and (max-width: 1140px) {
+    .visiblty11 {
+        display: none!important;
+    }
+    header nav .nav-menu {
+        display: block;
+    }
+    header nav .container li {
+        display: inline-block;
+        height: 40px;
+        width: 100%;
+    }
+    header nav .nav-container {
+        position: fixed;
+        display: none;
+        width: 25%;
+        height: 100vh;
+        background-color: var(--header);
+        right: 0;
+    }
+    .menu-icon-class:hover {
+        background-color: var(--header)!important;
+    }
+    .menu-icon-class:hover i {
+        color: white!important;
+    }
+    /* header nav .nav-container li .fa-user {
+        position: absolute;
+        right: -105px;
+    } */
+    header nav .container .dropdown:hover .dropdown-content {
+        display: none;
+    }
+    header nav .nav-container li i {
+        float: right;
+    }
+    header nav .container .logout-responsive {
+        display: inline-block;
+    }
+    .reponsive-nav-content {
+        display: inline-block;
+    }
+    .information-container .user-card {
+        height: 270px;
+        margin: auto;
+    }
+    .information-container .avatar-card {
+        width: 200px;
+    }
+}
+
+@media screen and (max-width: 740px) {
+    header nav .nav-container {
+        width: 50%;
+    }
+    .reponsive-nav-content {
+        width: 50%;
+    }
+    .section .section-header span {
+        font-size: 16px;
+    }
+    .chart-container {
+        width: 95%;
+        height: 900px;
+    }
+    .chart-section {
+        height: 1100px;
+    }
+    .userAddForm {
+        width: 90%;
+    }
+    .userAddFormHeader {
+        width: 90%
+    }
+    .list-container {
+        width: 95%;
+    }
+    .map-container {
+        width: 95%;
+    }
 }

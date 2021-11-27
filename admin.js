@@ -1,6 +1,5 @@
 var first = document.getElementById("first")
 var table = document.getElementById("myTable");
-var token = localStorage.getItem("token");
 const lastNameInputForUp = document.getElementById("last-name-input-for-up")
 const nameInputForUp = document.getElementById("name-input-for-up")
 const passwordInputForUp = document.getElementById("password-input-for-up")
@@ -10,19 +9,21 @@ var idInputForUp = 0;
 let collapsed = false;
 var userList;
 
-window.onload = onInit;
+// window.onload = onInit;
+onInit();
 
-function onInit() {
+async function onInit() {
+    var token = localStorage.getItem("token");
     if (token) {
-        getUser();
-        chartGrid();
-        dataGrid();
-        pieCartGrid();
-        map();
+        await getUser();
+        await chartGrid();
+        await dataGrid();
+        await pieCartGrid();
+        await map();
     }
 }
 
-function dataGrid() {
+async function dataGrid() {
     $(() => {
         $('#gridContainer').dxDataGrid({
             dataSource: {
@@ -105,7 +106,7 @@ function dataGrid() {
     });
 }
 
-function chartGrid() {
+async function chartGrid() {
     $(() => {
         const chartDataSource = new DevExpress.data.DataSource({
             store: {
@@ -233,7 +234,7 @@ async function pieCartGrid() {
 
 }
 
-function map() {
+async function map() {
     const markerUrl = 'https://js.devexpress.com/Demos/RealtorApp/images/map-marker.png';
     const markersData = [{
         location: '40.899895,29.211745',
@@ -288,12 +289,12 @@ function map() {
 
 var sayi = 1
 
-function scrolldown(params) {
+async function scrolldown(params) {
     let pageHeight = window.innerHeight;
     window.scrollTo(0, params * pageHeight * 1.3);
 }
 
-function add() {
+async function add() {
     var firstName = document.getElementById("adInput").value;
     var lastName = document.getElementById("soyadInput").value;
     var userPassword = document.getElementById("sifreInput").value;
@@ -369,10 +370,10 @@ function update() {
         })
 }
 
-function login() {
+async function login() {
     var firstName = document.getElementById("login-name-input").value
     var password = document.getElementById("login-password-input").value
-    fetch("http://localhost:56614/api/auth/login", {
+    await fetch("http://localhost:56614/api/auth/login", {
             method: "POST",
             body: JSON.stringify({
                 userFirstName: firstName,
@@ -395,14 +396,16 @@ function login() {
                 document.querySelector(".dropdown").style.display = "inline-block";
                 document.getElementById("user-name").innerHTML = firstName;
                 localStorage.setItem("token", response.data.token);
+                onInit();
             }
         })
         .catch(function(err) {
             console.log("error" + err);
         });
+
 }
 
-function loginVisibly(params) {
+async function loginVisibly(params) {
     if (params == "on")
         document.getElementById("login-id").style.display = "flex";
 
@@ -427,7 +430,7 @@ async function getUser() {
     await fetch("http://localhost:56614/api/auth/decodetoken", {
         method: "POST",
         body: JSON.stringify({
-            token: token
+            token: localStorage.getItem("token")
         }),
         headers: { "Content-Type": "application/json; charset=UTF-8" }
     }).then(response => {
@@ -462,8 +465,44 @@ async function getUser() {
         return response.json();
     }).then(result => {
         result.forEach(element => {
-            document.querySelector("#rank-text1").innerHTML = " " + element.name
+            console.log(element)
+            switch (element.name) {
+                case "admin":
+                    document.querySelector(".rank-text1").classList.remove('hidden');
+                    document.querySelector("#rank-text1").innerHTML = " " + element.name;
+
+                    break;
+                case "yonetici":
+                    document.querySelector(".rank-text2").classList.remove('hidden');
+                    document.querySelector("#rank-text2").innerHTML = " " + element.name;
+                    break;
+                case "uye":
+                    document.querySelector(".rank-text3").classList.remove('hidden');
+                    document.querySelector("#rank-text3").innerHTML = " " + element.name;
+                    break;
+            }
         });
     });
 
+}
+
+function logOut() {
+    window.localStorage.clear();
+    loginVisibly('on')
+    document.getElementById("user-name").innerHTML = "Giriş Yap";
+}
+
+function navMenuOpen() {
+    if (document.querySelector(".reponsive-nav-content").classList.contains("hidden")) {
+        document.querySelector(".reponsive-nav-content").classList.remove("hidden");
+        document.querySelector(".nav-container").classList.remove("visiblty11");
+        document.querySelector(".menu-icons").classList.remove("rotate0");
+        document.querySelector(".menu-icons").classList.add("rotate90");
+        document.querySelector(".nav-container").style.display = "block";
+    } else {
+        document.querySelector(".reponsive-nav-content").classList.add("hidden");
+        document.querySelector(".menu-icons").classList.remove("rotate90");
+        document.querySelector(".menu-icons").classList.add("rotate0");
+        document.querySelector(".nav-container").classList.add("visiblty11");
+    }
 }
